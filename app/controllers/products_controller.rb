@@ -26,7 +26,7 @@ class ProductsController < ApplicationController
   end 
 
   def all_products_method
-    product = Product.all
-    render json: product.as_json
+    products = Product.all
+    render json: products.as_json
   end 
 end
