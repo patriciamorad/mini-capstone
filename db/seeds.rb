@@ -14,5 +14,3 @@ product = Product.new({name: "sweatshirt", price: "50", image:"http://scene7.zum
 product.save
 product = Product.new({name: "shoes", price: "700", image:"https://i.pinimg.com/originals/2b/11/09/2b11099f4763e1f895059fdb21f37cc1.jpg", description: "black and white balenciaga speed knit sneakers"})
 product.save
-product = Product.new({name: "handbag", price: "1600", image:"https://www.plein.com/dw/image/v2/BBKQ_PRD/on/demandware.static/-/Sites-plein-master-catalog/default/dwd0196d34/images/main/S18A-WBA0533-PLE075N_02_m.jpg?sw=440&sh=560", description: "black philippe plein handbag"})
-product.save
