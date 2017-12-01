@@ -1,27 +1,12 @@
 class V1::ProductsController < ApplicationController
-
-  def pants_method
-    product = Product.first
-    render json: product.as_json
-  end 
-
-  def shirt_method 
-    product = Product.second
-    render json: product.as_json
-  end
-
-  def sweatshirt_method
-    product = Product.third
-    render json: product.as_json
-  end 
-
-  def shoes_method
-    product = Product.fourth
-    render json: product.as_json
-  end
+  before_action :authenticate_admin, except: [:index, :show]
 
   def index
-    products = Product.all
+    products = Product.all.order(:id => :asc)
+    search_terms = params[:search]
+    if search_terms
+      products = products.where("name ILIKE ?", "%#{params[:search]}%")
+    end 
     render json: products.as_json
   end 
 
@@ -35,11 +20,16 @@ class V1::ProductsController < ApplicationController
     product = Product.new(
       name: params["input_name"], 
       price: params["input_price"], 
-      description: params["input_description"]
+      description: params["input_description"],
+      user_id: current_user.id
     )
-    product.save
-    render json: product.as_json
+    if product.save
+      render json: product.as_json
+    else
+      render json: {errors: product.errors.full_messages}, status: :bad_request
+    end
   end
+  
 
   def update
     product_id = params["id"]
@@ -47,8 +37,12 @@ class V1::ProductsController < ApplicationController
     product.name = params["input_name"]
     product.price = params["input_price"]
     product.description = params["input_description"]
-    product.save
-    render json: product.as_json
+    product.active = params["active"]
+    if product.save 
+      render json: product.as_json
+    else 
+      render json: {errors: product.errors.full_message}, status: bad_request
+    end
   end 
 
   def destroy 
