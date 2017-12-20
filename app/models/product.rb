@@ -2,8 +2,10 @@ class Product < ApplicationRecord
   validates :name, presence: true
   validates :price, presence: true
   has_many :category_products
-  has_many :orders
+  has_many :categories, through: :category_products
+  has_many :orders, through: :carted_products
   belongs_to :supplier
+  has_many :carted_products
 
   def supplier
     Supplier.find_by(id: self.supplier_id)

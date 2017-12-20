@@ -20,8 +20,9 @@ class Frontend
       puts "[4] I want to update an existing product"
       puts "[5] I want to delete an existing product"
       puts
-      puts "[order] I want to make an order"
-      puts "[view] I want to view all of my orders"
+      puts "[cart] I want to add to my cart"
+      puts "[viewcart] I want to view my cart"
+      puts "[placeorder] I want to place an order"
       puts
       puts "[signup] Signup (create a user)"
       puts "[login] Login (create a JSON web token)"
@@ -94,20 +95,38 @@ class Frontend
         product_id = gets.chomp
         response = Unirest.delete("http://localhost:3000/v1/products/#{product_id}")
         pp response.body
-      elsif user_input == "order"
+     
+      elsif user_input == "cart"
         params = {}
         print "Please type the ID of your product: "
-        params[:product_id] = gets.chomp 
+        params[:product_id_input] = gets.chomp 
         print "Please type the quantity you wish to order (integer): "
-        params[:quantity] = gets.chomp 
-        response = Unirest.post("http://localhost:3000/v1/orders", parameters: params)
+        params[:quantity_input] = gets.chomp 
+        response = Unirest.post("http://localhost:3000/v1/carted_products", parameters: params)
         pp response.body
-      elsif user_input == "view"
-        print "Here are all of your orders: "
+      elsif user_input == "viewcart"
+        print "Here is your cart: "
         puts 
-        response = Unirest.get("http://localhost:3000/v1/orders")
+        response = Unirest.get("http://localhost:3000/v1/carted_products")
         orders = response.body
         pp orders
+      elsif user_input == "placeorder"
+        create = Unirest.post("http://localhost:3000/v1/orders")
+        order = create.body
+        pp order 
+
+        print "Would you like to purchase? (yes or no)"
+
+        params = gets.chomp 
+        if params == "yes"
+          response = Unirest.patch{"http://localhost:3000/v1/carted_products?purchase=true"}
+          purchase = response.body 
+          pp purchase
+        elsif params == "no" 
+          response = Unirest.patch{"http://localhost:3000/v1/carted_products?remove=true"}
+          carted_products = response.body 
+          pp carted_products
+        end
       elsif user_input == "signup"
         params = {}
         print "Name: "

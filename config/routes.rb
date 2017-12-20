@@ -10,5 +10,8 @@ Rails.application.routes.draw do
     post "/users" => "users#create"
     post "/orders" => "orders#create"
     get "/orders" => "orders#index"
+    get "/carted_products" => "carted_products#index"
+    post "/carted_products" => "carted_products#create"
+    patch "/carted_products" => "carted_products#update"
   end
 end 

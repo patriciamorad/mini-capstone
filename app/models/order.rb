@@ -1,6 +1,9 @@
 class Order < ApplicationRecord
   belongs_to :user
-  belongs_to :product
+  has_many :carted_products
+  has_many :products, through: :carted_products
+
+
 
   # def image
   #   Image.find_by(id: self.id)
@@ -20,7 +23,6 @@ class Order < ApplicationRecord
   def as_json 
     {
       id: id,
-      quantity: quantity,
       tax: tax,
       subtotal: subtotal,
       total: total  
