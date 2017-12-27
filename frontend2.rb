@@ -1,7 +1,6 @@
 
 require "unirest"
 require "pp"
-
 class Frontend 
   def initialize
     @jwt = ""

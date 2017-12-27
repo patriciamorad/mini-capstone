@@ -21,7 +21,8 @@
       name: params["input_name"], 
       price: params["input_price"], 
       description: params["input_description"],
-      user_id: current_user.id
+      user_id: current_user.id,
+      supplier_id: 1
     )
     if product.save
       render json: product.as_json
